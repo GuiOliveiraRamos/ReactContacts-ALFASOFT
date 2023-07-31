@@ -13,12 +13,31 @@ export default function App() {
   }, [contacts]);
 
   const handleAddContact = (newContact) => {
+    const existingContact = contacts.find(
+      (contact) =>
+        contact.name === newContact.name || contact.email === newContact.email
+    );
+
+    if (existingContact) {
+      alert("Contact or email already exists.");
+      return;
+    }
+
     setContacts([...contacts, newContact]);
   };
 
   const handleDeleteContact = (id) => {
     const updatedContacts = contacts.filter((contact) => contact.id !== id);
     setContacts(updatedContacts);
+  };
+
+  const handleEditContact = (editedContact) => {
+    setContacts((prevContacts) => {
+      const updatedContacts = prevContacts.map((contact) =>
+        contact.id === editedContact.id ? editedContact : contact
+      );
+      return updatedContacts;
+    });
   };
 
   return (
@@ -31,12 +50,18 @@ export default function App() {
               contacts={contacts}
               onAddContact={handleAddContact}
               onDeleteContact={handleDeleteContact}
+              onEditContact={handleEditContact}
             />
           }
         />
         <Route
           path="/forms"
-          element={<ContactForm onAddContact={handleAddContact} />}
+          element={
+            <ContactForm
+              onAddContact={handleAddContact}
+              onEditContact={handleEditContact}
+            />
+          }
         />
       </Routes>
     </BrowserRouter>

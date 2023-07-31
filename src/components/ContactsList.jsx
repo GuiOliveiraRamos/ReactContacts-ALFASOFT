@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import { styled } from "styled-components";
+import ContactForm from "./ContactForm";
 
-const ContactList = ({ contacts, onDeleteContact }) => {
+const ContactList = ({ contacts, onDeleteContact, onEditContact }) => {
+  const [editingContact, setEditingContact] = useState(null);
+
   const handleDelete = (id) => {
-    onDeleteContact(id);
+    const shouldDelete = window.confirm(
+      "Are you sure you want to delete this contact?"
+    );
+
+    if (shouldDelete) {
+      onDeleteContact(id);
+    }
+  };
+
+  const handleEdit = (contact) => {
+    setEditingContact(contact);
+  };
+
+  const handleEditContact = (updatedContact) => {
+    onEditContact(updatedContact);
+    setEditingContact(null);
   };
 
   return (
@@ -21,11 +39,18 @@ const ContactList = ({ contacts, onDeleteContact }) => {
             <strong>Email</strong>: {contact.email}
           </p>
           <CardFooter>
-            <button>Edit</button>
+            <button onClick={() => handleEdit(contact)}>Edit</button>
             <button onClick={() => handleDelete(contact.id)}>Delete</button>
           </CardFooter>
         </Contact>
       ))}
+      {editingContact && (
+        <ContactForm
+          onAddContact={null}
+          onEditContact={handleEditContact}
+          editingContact={editingContact}
+        />
+      )}
     </Container>
   );
 };

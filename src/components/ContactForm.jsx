@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { styled } from "styled-components";
 
-const ContactForm = ({ onAddContact }) => {
+const ContactForm = ({ onAddContact, onEditContact, editingContact }) => {
   const [newContact, setNewContact] = useState({
     name: "",
     contact: "",
@@ -11,6 +11,19 @@ const ContactForm = ({ onAddContact }) => {
   });
 
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (editingContact) {
+      setNewContact(editingContact);
+    } else {
+      setNewContact({
+        name: "",
+        contact: "",
+        email: "",
+        image: "",
+      });
+    }
+  }, [editingContact]);
 
   const isValidEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -45,7 +58,11 @@ const ContactForm = ({ onAddContact }) => {
       return;
     }
 
-    onAddContact(newContact);
+    if (!editingContact) {
+      onAddContact(newContact);
+    } else {
+      onEditContact({ ...newContact, id: editingContact.id });
+    }
 
     setNewContact({ name: "", contact: "", email: "", image: "" });
 
@@ -100,6 +117,7 @@ const ContactForm = ({ onAddContact }) => {
     </Body>
   );
 };
+
 const Body = styled.body`
   width: 100%;
   display: flex;
