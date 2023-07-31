@@ -47,6 +47,10 @@ const HomePage = () => {
       alert("Invalid email address.");
       return;
     }
+    if (!newContact.image) {
+      alert("Image is required.");
+      return;
+    }
 
     setContacts([...contacts, newContact]);
   };
