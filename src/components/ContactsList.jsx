@@ -1,11 +1,15 @@
 import React from "react";
 import { styled } from "styled-components";
 
-const ContactList = ({ contacts }) => {
+const ContactList = ({ contacts, onDeleteContact }) => {
+  const handleDelete = (id) => {
+    onDeleteContact(id);
+  };
+
   return (
     <Container>
-      {contacts.map((contact, index) => (
-        <Contact key={index}>
+      {contacts.map((contact) => (
+        <Contact key={contact.id}>
           <CardHeader>
             <img src={contact.image} alt={contact.name} />
             <h2>{contact.name}</h2>
@@ -18,7 +22,7 @@ const ContactList = ({ contacts }) => {
           </p>
           <CardFooter>
             <button>Edit</button>
-            <button>Delete</button>
+            <button onClick={() => handleDelete(contact.id)}>Delete</button>
           </CardFooter>
         </Contact>
       ))}

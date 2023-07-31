@@ -11,8 +11,14 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem("contacts", JSON.stringify(contacts));
   }, [contacts]);
+
   const handleAddContact = (newContact) => {
     setContacts([...contacts, newContact]);
+  };
+
+  const handleDeleteContact = (id) => {
+    const updatedContacts = contacts.filter((contact) => contact.id !== id);
+    setContacts(updatedContacts);
   };
 
   return (
@@ -21,7 +27,11 @@ export default function App() {
         <Route
           path="/"
           element={
-            <HomePage contacts={contacts} onAddContact={handleAddContact} />
+            <HomePage
+              contacts={contacts}
+              onAddContact={handleAddContact}
+              onDeleteContact={handleDeleteContact}
+            />
           }
         />
         <Route
