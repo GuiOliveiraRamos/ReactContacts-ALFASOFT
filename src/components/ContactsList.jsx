@@ -26,30 +26,31 @@ const ContactList = ({ contacts, onDeleteContact, onEditContact }) => {
 
   return (
     <Container>
-      {contacts.map((contact) => (
-        <Contact key={contact.id}>
-          <CardHeader>
-            <img src={contact.image} alt={contact.name} />
-            <h2>{contact.name}</h2>
-          </CardHeader>
-          <p>
-            <strong>Contact</strong>: {contact.contact}
-          </p>
-          <p>
-            <strong>Email</strong>: {contact.email}
-          </p>
-          <CardFooter>
-            <button onClick={() => handleEdit(contact)}>Edit</button>
-            <button onClick={() => handleDelete(contact.id)}>Delete</button>
-          </CardFooter>
-        </Contact>
-      ))}
-      {editingContact && (
+      {editingContact ? (
         <ContactForm
           onAddContact={null}
           onEditContact={handleEditContact}
           editingContact={editingContact}
         />
+      ) : (
+        contacts.map((contact) => (
+          <Contact key={contact.id}>
+            <CardHeader>
+              <img src={contact.image} alt={contact.name} />
+              <h2>{contact.name}</h2>
+            </CardHeader>
+            <p>
+              <strong>Contact</strong>: {contact.contact}
+            </p>
+            <p>
+              <strong>Email</strong>: {contact.email}
+            </p>
+            <CardFooter>
+              <button onClick={() => handleEdit(contact)}>Edit</button>
+              <button onClick={() => handleDelete(contact.id)}>Delete</button>
+            </CardFooter>
+          </Contact>
+        ))
       )}
     </Container>
   );
@@ -63,7 +64,7 @@ const Container = styled.div`
 const Contact = styled.div`
   margin: 0 20px 0 20px;
   width: 250px;
-  height: 200px;
+  height: 300px;
   padding: 15px;
   border-radius: 20px;
   background-color: #a7a7cc;
@@ -76,6 +77,9 @@ const CardHeader = styled.div`
   flex-direction: column;
   align-items: center;
   font-family: Arial, Helvetica, sans-serif;
+  img {
+    width: 100px;
+  }
 `;
 
 const CardFooter = styled.div`
